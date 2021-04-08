@@ -1,0 +1,16 @@
+.App {
+    background-color: #ffcc5c;
+    text-align: center;
+}
+
+.navBar {
+    text-align: center;
+    padding-top: 1.5em;
+    font-size: 26px;
+}
+
+.nav-bar:hover {
+    font-weight: bolder;
+    cursor: pointer;
+    text-decoration: none;
+}
