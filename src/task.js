@@ -20,20 +20,34 @@ function Task(props) {
 
     return (
         <div className={'container-fluid'} style={{ paddingTop: '10px', marginBlock: '50px' }}>
-            <input type={'text'} onChange={inputTask} placeholder={' Add new task...'} className={'d-inline'}></input>
-            &nbsp; &nbsp;
-            <Button style={{ paddingLeft: '3em', paddingRight: '3em' }} onClick={addTask} >Add</Button>
 
-            <ul>
-                {list.map((item, index) => {
-                    return (
-                        <li key={index}>
-                            {item}
-                        </li>
+            <div>
+                <div className={"col-xs-12 d-flex justify-content-center"}>
+                    <div>
+                        <input type={'text'} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} placeholder={' Add a new task here!'} className={'d-inline'}></input>
+                    </div>
+                &nbsp; &nbsp;
+                    <div>
+                        <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add</Button>
+                    </div>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                </div>
+            </div>
 
-                    )
-                })}
-            </ul>
+            <div className={'container justify-content-center'}>
+                <h3 style={{ textAlign: 'center', paddingTop: '1em'}}>To-Do List:</h3>
+                    <ul>
+                        {list.map((item, index) => {
+                            return (
+                                <li className={' container bg-info text-uppercase'} style={{ listStyleType: 'none', borderColor: 'black', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                    <input type={'checkbox'}></input>
+                                    &nbsp;
+                                    {item} 
+                                </li>
+                            )
+                        })}
+                    </ul>
+            </div>
         </div>
     );
 }

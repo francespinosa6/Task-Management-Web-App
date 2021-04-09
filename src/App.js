@@ -40,7 +40,7 @@ function App() {
                     </div>
                 </div>
                 <Switch>
-                    <Route exact path="/">
+                    <Route exact path="/Task-Management-Web-App">
                         <Home />
                     </Route>
                     <Route path="/about">
