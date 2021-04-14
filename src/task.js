@@ -15,8 +15,20 @@ function Task(props) {
         //console.log(inTask);
     }
 
-    const addTask = () => {
-        setList([...list, inTask]);
+    const addTask = async () => {
+        if (inTask.length > 0) {
+            setList([...list, inTask]);
+            setInTask('');
+        }
+    }
+
+    const onEnterPress = async (ev) => {
+        if (ev.key === 'Enter') {
+            if (inTask.length > 0) {
+                setList([...list, inTask]);
+                setInTask('');
+            }
+        }
     }
 
     return (
@@ -25,7 +37,7 @@ function Task(props) {
             <div>
                 <div className={"col-xs-12 d-flex justify-content-center"}>
                     <div>
-                        <input type={'text'} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} placeholder={' Add a new task here!'} className={'d-inline'}></input>
+                        <input type={'text'} value={inTask} placeholder={' Add new task here...'} onKeyDown={onEnterPress} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} className={'d-inline'}></input>
                     </div>
                 &nbsp; &nbsp;
                     <div>
@@ -36,18 +48,19 @@ function Task(props) {
             </div>
 
             <div className={'container justify-content-center'}>
-                <h3 style={{ textAlign: 'center', paddingTop: '1em'}}>To-Do List:</h3>
-                    <ul>
-                        {list.map((item, index) => {
-                            return (
-                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
-                                    <input type={'checkbox'} style={{ cursor: 'pointer' }}></input>
+                <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-Do List:</h3>
+                {JSON.stringify(list)}
+                <ul>
+                    {list.map((item, index) => {
+                        return (
+                            <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                <input type={'checkbox'} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
-                                    { item} < DeleteOutlined className={'float-right'} style={{ color: 'darkred', paddingTop: '2px' }} />
-                                </li>
-                            )
-                        })}
-                    </ul>
+                                { item} < DeleteOutlined className={'float-right p-1'} style={{ color: 'darkred' }} />
+                            </li>
+                        )
+                    })}
+                </ul>
             </div>
         </div>
     );
