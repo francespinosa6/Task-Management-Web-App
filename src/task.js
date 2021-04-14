@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button} from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Task(props) {
@@ -28,7 +29,7 @@ function Task(props) {
                     </div>
                 &nbsp; &nbsp;
                     <div>
-                        <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add</Button>
+                        <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add<i class="far fa-trash-alt"></i></Button>
                     </div>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
@@ -39,10 +40,10 @@ function Task(props) {
                     <ul>
                         {list.map((item, index) => {
                             return (
-                                <li className={' container bg-info text-uppercase'} style={{ listStyleType: 'none', borderColor: 'black', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
-                                    <input type={'checkbox'}></input>
+                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                    <input type={'checkbox'} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
-                                    {item} 
+                                    { item} < DeleteOutlined className={'float-right'} style={{ color: 'darkred', paddingTop: '2px' }} />
                                 </li>
                             )
                         })}
