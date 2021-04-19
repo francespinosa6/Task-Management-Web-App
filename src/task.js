@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Button} from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -14,6 +14,19 @@ function Task(props) {
         setInTask(ev.currentTarget.value);
     }
 
+    React.useEffect(() => {
+        const json = localStorage.getItem('list');
+        const loadedTasks = JSON.parse(json);
+        if (loadedTasks) {
+            setList(loadedTasks);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        const json = JSON.stringify(list);
+        localStorage.setItem("list", json);
+    }, [list]);
+
     const addTask = async () => {
         if (inTask.length > 0) {
             setList([...list, { string: inTask, status: 'active' }]);
@@ -21,61 +34,73 @@ function Task(props) {
         }
     }
 
-    const onEnterPress = async (ev) => {
-        if (ev.key === 'Enter') {
-            if (inTask.length > 0) {
-                setList([...list, { string: inTask, status: 'active' }]);
-                setInTask('');
+        const completedTask = async (index) => {
+            let updatedList = [...list].map((item) => {
+                if (item.index === index) {
+                    item.status = 'completed';
+                }
+                return item;
+            })
+            setList(updatedList);
+        }
+
+        const deleteTask = async (index) => {
+            let updatedList = [...list].filter((item) => item.index !== index);
+            setList(updatedList);
+        }
+
+        const onEnterPress = async (ev) => {
+            if (ev.key === 'Enter') {
+                if (inTask.length > 0) {
+                    setList([...list, { string: inTask, status: 'active' }]);
+                    setInTask('');
+                }
             }
         }
-    }
 
-    const switchTab = async (tab) => {
-    }
+        return (
+            <div className={'container-fluid'} style={{ paddingTop: '10px', marginBlock: '50px' }}>
 
-    return (
-        <div className={'container-fluid'} style={{ paddingTop: '10px', marginBlock: '50px' }}>
-
-            <div>
-                <div className={"col-xs-12 d-flex justify-content-center"}>
-                    <div>
-                        <input type={'text'} value={inTask} placeholder={' Add new task here...'} onKeyDown={onEnterPress} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} className={'d-inline'}></input>
-                    </div>
+                <div>
+                    <div className={"col-xs-12 d-flex justify-content-center"}>
+                        <div>
+                            <input type={'text'} value={inTask} placeholder={' Add new task here...'} onKeyDown={onEnterPress} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} className={'d-inline'}></input>
+                        </div>
                 &nbsp; &nbsp;
                     <div>
-                        <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add<i class="far fa-trash-alt"></i></Button>
-                    </div>
+                            <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add<i class="far fa-trash-alt"></i></Button>
+                        </div>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
-            </div>
+                </div>
 
-            <div className={'container justify-content-center'}>
-                {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-do List:</h3>}  {/*Only shows when things are added to the list*/}
-                <ul>
-                    {list.map((item, index) => {
-                        return (
-                            <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
-                                <input type={'checkbox'} style={{ cursor: 'pointer' }}></input>
+                <div className={'container justify-content-center'}>
+                    {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-do List:</h3>}  {/*Only shows when things are added to the list*/}
+                    <ul>
+                        {list.map((item, index) => {
+                            return (
+                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={item.index} >
+                                    <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item.index)} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
-                                { item.string } < DeleteOutlined className={'float-right p-1'} style={{ color: 'darkred' }} />
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>
-            <br /><br />
-            <div className={"col-xs-12 d-flex justify-content-center"}>
+                                    {item.string} < DeleteOutlined onClick={() => deleteTask(item.index)} className={'float-right p-1'} style={{ color: 'darkred' }} />
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+                <br /><br />
+                <div className={"col-xs-12 d-flex justify-content-center"}>
 
-                <h4>Show:</h4>&nbsp;
+                    <h4>Show:</h4>&nbsp;
 
                 <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
 
-                <Button onClick={() => { setCurrentTab('active') }} style={currentTab === 'active' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>Active</Button>
+                    <Button onClick={() => { setCurrentTab('active') }} style={currentTab === 'active' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>Active</Button>
 
-                <Button onClick={() => { setCurrentTab('completed') }} style={currentTab === 'completed' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} >Completed</Button>
+                    <Button onClick={() => { setCurrentTab('completed') }} style={currentTab === 'completed' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} >Completed</Button>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 
 export default Task;
