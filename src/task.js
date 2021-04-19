@@ -8,16 +8,15 @@ function Task(props) {
 
     const [inTask, setInTask] = useState();
     const [list, setList] = useState([]);
+    const [currentTab, setCurrentTab] = useState();
 
     const inputTask = async (ev) => {
-        //console.log(ev.currentTarget.value);
         setInTask(ev.currentTarget.value);
-        //console.log(inTask);
     }
 
     const addTask = async () => {
         if (inTask.length > 0) {
-            setList([...list, inTask]);
+            setList([...list, { string: inTask, status: 'active' }]);
             setInTask('');
         }
     }
@@ -25,10 +24,13 @@ function Task(props) {
     const onEnterPress = async (ev) => {
         if (ev.key === 'Enter') {
             if (inTask.length > 0) {
-                setList([...list, inTask]);
+                setList([...list, { string: inTask, status: 'active' }]);
                 setInTask('');
             }
         }
+    }
+
+    const switchTab = async (tab) => {
     }
 
     return (
@@ -48,19 +50,29 @@ function Task(props) {
             </div>
 
             <div className={'container justify-content-center'}>
-                <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-Do List:</h3>
-                {JSON.stringify(list)}
+                {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-do List:</h3>}  {/*Only shows when things are added to the list*/}
                 <ul>
                     {list.map((item, index) => {
                         return (
                             <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
                                 <input type={'checkbox'} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
-                                { item} < DeleteOutlined className={'float-right p-1'} style={{ color: 'darkred' }} />
+                                { item.string } < DeleteOutlined className={'float-right p-1'} style={{ color: 'darkred' }} />
                             </li>
                         )
                     })}
                 </ul>
+            </div>
+            <br /><br />
+            <div className={"col-xs-12 d-flex justify-content-center"}>
+
+                <h4>Show:</h4>&nbsp;
+
+                <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
+
+                <Button onClick={() => { setCurrentTab('active') }} style={currentTab === 'active' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>Active</Button>
+
+                <Button onClick={() => { setCurrentTab('completed') }} style={currentTab === 'completed' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} >Completed</Button>
             </div>
         </div>
     );

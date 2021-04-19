@@ -15,8 +15,6 @@ import Task from './task';
 
 function App() {
 
-    const [currentTab, setCurrentTab] = useState();
-
     function Home() {
         return (
             <div className={'container-fluid'}> Welcome to your Task Manager App! </div>
