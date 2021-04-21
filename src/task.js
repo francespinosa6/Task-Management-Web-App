@@ -6,33 +6,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Task(props) {
 
-    const [inTask, setInTask] = useState();
-    const [list, setList] = useState([]);
-    const [currentTab, setCurrentTab] = useState();
+        const [inTask, setInTask] = useState();
+        const [list, setList] = useState([]);
+        const [currentTab, setCurrentTab] = useState();
 
-    const inputTask = async (ev) => {
-        setInTask(ev.currentTarget.value);
-    }
-
-    React.useEffect(() => {
-        const json = localStorage.getItem('list');
-        const loadedTasks = JSON.parse(json);
-        if (loadedTasks) {
-            setList(loadedTasks);
+        const inputTask = async (ev) => {
+            setInTask(ev.currentTarget.value);
         }
-    }, []);
 
-    React.useEffect(() => {
-        const json = JSON.stringify(list);
-        localStorage.setItem("list", json);
-    }, [list]);
+        React.useEffect(() => {
+            const json = localStorage.getItem('list');
+            const loadedTasks = JSON.parse(json);
+            if (loadedTasks) {
+                setList(loadedTasks);
+            }
+        }, []);
 
-    const addTask = async () => {
-        if (inTask.length > 0) {
-            setList([...list, { string: inTask, status: 'active' }]);
-            setInTask('');
+        React.useEffect(() => {
+            const json = JSON.stringify(list);
+            localStorage.setItem("list", json);
+        }, [list]);
+
+        const addTask = async () => {
+            if (inTask.length > 0) {
+                setList([...list, { string: inTask, status: 'active' }]);
+                setInTask('');
+            }
         }
-    }
 
         const completedTask = async (index) => {
             let updatedList = [...list].map((item) => {
@@ -79,7 +79,7 @@ function Task(props) {
                     <ul>
                         {list.map((item, index) => {
                             return (
-                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={item.index} >
+                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
                                     <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item.index)} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
                                     {item.string} < DeleteOutlined onClick={() => deleteTask(item.index)} className={'float-right p-1'} style={{ color: 'darkred' }} />
