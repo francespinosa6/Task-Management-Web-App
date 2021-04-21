@@ -1,5 +1,4 @@
 import './App.css';
-import { useState } from 'react';
 import 'antd/dist/antd.css';
 import { CalendarOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,12 +15,6 @@ import Task from './task';
 
 
 function App() {
-
-    function Home() {
-        return (
-            <div className={'container-fluid'}> Welcome to your Task Manager App! </div>
-        );
-    }
 
     return (
         <div>
