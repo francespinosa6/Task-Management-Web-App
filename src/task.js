@@ -45,7 +45,7 @@ function Task(props) {
         }
 
         const deleteTask = async (index) => {
-            let updatedList = [...list].filter((item) => item.index !== index);
+            let updatedList = [...list].filter((item) => item !== index);
             setList(updatedList);
         }
 
@@ -82,7 +82,7 @@ function Task(props) {
                                 <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
                                     <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item.index)} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
-                                    {item.string} < DeleteOutlined onClick={() => deleteTask(item.index)} className={'float-right p-1'} style={{ color: 'darkred' }} />
+                                    {item.string} < DeleteOutlined onClick={() => deleteTask(item)} className={'float-right p-1'} style={{ color: 'darkred' }} />
                                 </li>
                             )
                         })}
