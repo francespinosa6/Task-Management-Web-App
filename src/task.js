@@ -36,7 +36,7 @@ function Task(props) {
 
         const completedTask = async (index) => {
             let updatedList = [...list].map((item) => {
-                if (item.index === index) {
+                if (item === index) {
                     item.status = 'completed';
                 }
                 return item;
@@ -80,7 +80,7 @@ function Task(props) {
                         {list.map((item, index) => {
                             return (
                                 <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
-                                    <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item.index)} style={{ cursor: 'pointer' }}></input>
+                                    <input type={'checkbox'} checked={item.completed} onClick={() => completedTask(item)} style={{ cursor: 'pointer' }}></input>
                                     &nbsp;
                                     {item.string} < DeleteOutlined onClick={() => deleteTask(item)} className={'float-right p-1'} style={{ color: 'darkred' }} />
                                 </li>
@@ -93,11 +93,19 @@ function Task(props) {
 
                     <h4>Show:</h4>&nbsp;
 
-                <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
+                    <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
 
                     <Button onClick={() => { setCurrentTab('active') }} style={currentTab === 'active' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>Active</Button>
 
                     <Button onClick={() => { setCurrentTab('completed') }} style={currentTab === 'completed' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} >Completed</Button>
+                    {list.map((item, index) => {
+                        return (
+                            <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                
+                                {item.status = 'completed' && item.string}
+                            </li>
+                        )
+                    })}
                 </div>
             </div>
         );
