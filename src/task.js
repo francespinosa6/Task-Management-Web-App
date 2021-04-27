@@ -109,7 +109,7 @@ function Task(props) {
 
                     <h4>Show:</h4>&nbsp;
 
-                {/* <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button> */}
+                    <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
 
                     <Button onClick={() => { setCurrentTab('active') }} style={currentTab === 'active' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>Active</Button>
 
@@ -117,9 +117,30 @@ function Task(props) {
                     
                 </div>
                 <div className={'container justify-content-center'}>
-                {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>{currentTab == null ? 'completed' : currentTab}:</h3>}  {/*Only shows when things are added to the list*/}
+                    {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}></h3>}  {/*Only shows when things are added to the list*/}
                     <ul>
-                        {  
+
+                        if(currentTab === 'all'){
+                            list.map((item, index) => {
+                                return (
+                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                        {item.string}
+                                    </li>)}
+                        } else if (currentTab === 'active') {
+                            list.filter(item => item.status === 'active').map((item, index) => {
+                                return (
+                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index}>
+                                        {item.string}
+                                    </li>)}
+                            } else {
+                            list.filter(item => item.status === 'completed').map((item, index) => {
+                                return (
+                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index}>
+                                        {item.string}
+                                    </li>)}
+                        }
+
+                        {/*{  
                           currentTab === 'active' ? 
                             list.filter(item => item.status === 'active').map((item , index) => {
                             return (
@@ -131,10 +152,10 @@ function Task(props) {
                             return (
                                 <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }}  key={index}>
                                   {item.string} 
-                                </li>
+                                </li> 
                             )
                         })
-                    }
+                    }*/}
                     </ul>
                 </div>
                 <br/>
