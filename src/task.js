@@ -5,30 +5,30 @@ import { DeleteOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Task(props) {
-
+                                                           //Variables and array
         const [inTask, setInTask] = useState();
         const [list, setList] = useState([]);
         const [currentTab, setCurrentTab] = useState();
 
         const inputTask = async (ev) => {
-            setInTask(ev.currentTarget.value);
+            setInTask(ev.currentTarget.value);             //Gets input value from input field
         }
 
         React.useEffect(() => {
-            const json = localStorage.getItem('list');
+            const json = localStorage.getItem('list');    //Creates a local storage for every item added to the list
             const loadedTasks = JSON.parse(json);
             if (loadedTasks) {
                 setList(loadedTasks);
-                setCurrentTab('active')
+                setCurrentTab('all');                      //Sets tab 'All' as default
             }
         }, []);
-
+        
         React.useEffect(() => {
-            const json = JSON.stringify(list);
+            const json = JSON.stringify(list);             
             localStorage.setItem("list", json);
         }, [list]);
 
-        const addTask = async () => {
+        const addTask = async () => {                      //Adds a task and set status to active
             if (inTask.length > 0) {
                 setList([...list, { string: inTask, status: 'active' }]);
                 setInTask('');
@@ -36,17 +36,15 @@ function Task(props) {
         }
 
         const completedTask = async (index) => {
-            let updatedList = [...list].map((item) => {
+            let updatedList = [...list].map((item) => {     //checks if item is marked as completed and changes the status
                 if (item === index) {
-                    if(item.completed == true)
+                    if(item.completed === true)
                     {
-                        console.log('T')
                         item.status = 'active';
                         item.completed = false;
                     }
                     else
                     {
-                        console.log('F')
                         item.status = 'completed';
                         item.completed = true;
                     }
@@ -57,14 +55,14 @@ function Task(props) {
             setList(updatedList);
         }
 
-        const deleteTask = async (index) => {
+        const deleteTask = async (index) => {               //To delete task
             console.log(index)
             let updatedList = [...list].filter((item) => item !== index);
             console.log(updatedList)
             setList(updatedList);
         }
 
-        const onEnterPress = async (ev) => {
+        const onEnterPress = async (ev) => {               //Adds item to the list upon clicking the enter key
             if (ev.key === 'Enter') {
                 if (inTask.length > 0) {
                     setList([...list, { string: inTask, status: 'active' }]);
@@ -78,11 +76,11 @@ function Task(props) {
 
                 <div>
                     <div className={"col-xs-12 d-flex justify-content-center"}>
-                        <div>
+                        <div>                                                   {/*Input Field*/}
                             <input type={'text'} value={inTask} placeholder={' Add new task here...'} onKeyDown={onEnterPress} style={{ padding: '2.5px', cursor: 'pointer', color: 'black', backgroundColor: '#1c94a1', borderColor: 'black' }} onChange={inputTask} className={'d-inline'}></input>
                         </div>
                 &nbsp; &nbsp;
-                    <div>
+                    <div>                                                       {/*Button*/}
                             <Button style={{ paddingLeft: '3em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} onClick={addTask} >Add<i class="far fa-trash-alt"></i></Button>
                         </div>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -90,9 +88,10 @@ function Task(props) {
                 </div>
 
                 <div className={'container justify-content-center'}>
-                    {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-do List All:</h3>}  {/*Only shows when things are added to the list*/}
+                    {list.length > 0 && currentTab && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}>To-do List: </h3>}  {/*Only shows when list is not empty*/}
                     <ul>{
-                            list.map((item, index) => {
+                        list.map((item, index) => {
+                            if (currentTab === 'completed' && item.completed) {        //Dispalys list of completed items
                                 return (
                                     <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
                                         <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item)} style={{ cursor: 'pointer' }}></input>
@@ -100,14 +99,34 @@ function Task(props) {
                                         {item.string} < DeleteOutlined onClick={() => deleteTask(item)} className={'float-right p-1'} style={{ color: 'darkred' }} />
                                     </li>
                                 )
-                            })
+                            }
+                            else if (currentTab === 'active' && !(item.completed)) {   //Displays list of active items
+                                return (
+                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                        <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item)} style={{ cursor: 'pointer' }}></input>
+                                        &nbsp;
+                                        {item.string} < DeleteOutlined onClick={() => deleteTask(item)} className={'float-right p-1'} style={{ color: 'darkred' }} />
+                                    </li>
+                                )
+                            } else if (currentTab === 'all') {                         //Displays list of All items
+                                return (
+                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
+                                        <input type={'checkbox'} checked={item.completed} onChange={() => completedTask(item)} style={{ cursor: 'pointer' }}></input>
+                                        &nbsp;
+                                        {item.string} < DeleteOutlined onClick={() => deleteTask(item)} className={'float-right p-1'} style={{ color: 'darkred' }} />
+                                    </li>
+                                )
+                            }
+                          
+                           })
+                    
                         }
                     </ul>
                 </div>
                 <br /><br />
-                <div className={"col-xs-12 d-flex justify-content-center"}>
+                <div className={"col-xs-12 d-flex justify-content-center"}>    {/*Buttons to filter list as completed, active or all*/}
 
-                    <h4>Show:</h4>&nbsp;
+                    <h4>Show:</h4>&nbsp;   
 
                     <Button onClick={() => { setCurrentTab('all') }} style={currentTab === 'all' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }}>All</Button>
 
@@ -116,49 +135,6 @@ function Task(props) {
                     <Button onClick={() => { setCurrentTab('completed') }} style={currentTab === 'completed' ? { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: '#ffcc5c', borderColor: 'black' } : { paddingLeft: '2em', paddingRight: '3em', backgroundColor: '#1c94a1', fontWeight: 'bold', color: 'black', borderColor: 'black' }} >Completed</Button>
                     
                 </div>
-                <div className={'container justify-content-center'}>
-                    {list.length > 0 && <h3 style={{ textAlign: 'center', paddingTop: '1em' }}></h3>}  {/*Only shows when things are added to the list*/}
-                    <ul>
-
-                        if(currentTab === 'all'){
-                            list.map((item, index) => {
-                                return (
-                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index} >
-                                        {item.string}
-                                    </li>)}
-                        } else if (currentTab === 'active') {
-                            list.filter(item => item.status === 'active').map((item, index) => {
-                                return (
-                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index}>
-                                        {item.string}
-                                    </li>)}
-                            } else {
-                            list.filter(item => item.status === 'completed').map((item, index) => {
-                                return (
-                                    <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }} key={index}>
-                                        {item.string}
-                                    </li>)}
-                        }
-
-                        {/*{  
-                          currentTab === 'active' ? 
-                            list.filter(item => item.status === 'active').map((item , index) => {
-                            return (
-                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }}  key={index}>
-                                  {item.string} 
-                                </li>
-                            )
-                        }) :  list.filter(item => item.status === 'completed').map((item , index) => {
-                            return (
-                                <li className={' container bg-info border border-dark text-uppercase'} style={{ listStyleType: 'none', color: '#ffcc5c', fontWeight: 'bold', fontSize: 'medium' }}  key={index}>
-                                  {item.string} 
-                                </li> 
-                            )
-                        })
-                    }*/}
-                    </ul>
-                </div>
-                <br/>
             </div>
         );
     }
