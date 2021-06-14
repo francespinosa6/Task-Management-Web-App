@@ -1,8 +1,8 @@
-<h1>Name: Francisco Espinosa</h1></br>
-<h2>Overview/description of the project: Create a Task management (To-do list) website using React.js</h2> </br>
-<h2>Details on how to use it or what functionality is offered: Inside of the folder where project is located, type npm start in the command prompt to start the project. I used Visual Studio as editor.</h2></br>
-<h2>Technologies Used ( .html , .css ): React.JS, Javascript, CSS, Bootstrap, and Ant Design. </h2></br>
-<h2>Ideas for future improvement (minimum of 3): Improve appearance of website, make contact form functional and also improve its appearance.</h2>
+<h3>Name: Francisco Espinosa</h3></br>
+<h4>Overview/description of the project: Create a Task management (To-do list) website using React.js</h4> </br>
+<h4>Details on how to use it or what functionality is offered: Inside of the folder where project is located, type npm start in the command prompt to start the project. I used Visual Studio as editor.</h4></br>
+<h4>Technologies Used ( .html , .css ): React.JS, Javascript, CSS, Bootstrap, and Ant Design. </h4></br>
+<h4>Ideas for future improvement (minimum of 3): Improve appearance of website, make contact form functional and also improve its appearance.</h4>
 
 
 
